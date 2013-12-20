@@ -1,0 +1,31 @@
+// Simple lighting vshader
+//
+//
+uniform mat4 uMVPMatrix;
+uniform mat4 uMVMatrix;
+
+attribute vec4 aPosition;
+attribute vec3 aNormal;
+attribute vec2 aTextureCoordinate;
+
+varying vec3 vNormal;
+varying vec2 vTextureCoordinate;
+varying vec4 vColor;
+
+vec4 lightPos = vec4(0.0, -1.0, -1.0, 1.0);
+
+void main() {
+    vTextureCoordinate = aTextureCoordinate;
+    vNormal = aNormal;
+    
+    vec4 normal = vec4(aNormal, 1.0);
+    normal = uMVMatrix * normal;
+    
+    vec3 lightVec = normalize(lightPos.xyz);
+    
+    float ldn = dot(lightVec, normalize(normal.xyz));
+    ldn = max(ldn, 0.0) * 0.975;
+    vColor = vec4(ldn, ldn, ldn, 1.0);
+
+    gl_Position = uMVPMatrix * aPosition;
+}

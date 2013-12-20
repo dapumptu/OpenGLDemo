@@ -1,0 +1,21 @@
+// Normal shader
+//
+uniform mat4 uModelViewProjection;
+uniform mat4 uModel;
+// Warning: if attribute is not used, it will be remove by
+// the shader compiler and you will get error when using
+// GLES20.glGetAttribLocation
+attribute vec4 aPosition;
+attribute vec3 aNormal;
+attribute vec2 aTextureCoordinate;
+varying vec2 vTextureCoordinate;
+varying vec3 vViewPosition;
+void main() {
+    vTextureCoordinate = aTextureCoordinate;
+    vec4 mPosition = uModel * (aPosition * vec4(2.0, 2.0, 2.0, 1.0));
+    vec4 temp = uModelViewProjection * uModel * aPosition;
+    vViewPosition = vec3(-2.0, 0.0, 0.0) - mPosition.xyz;
+vec3 vTemp = aNormal;
+    gl_Position = aPosition;
+
+}
